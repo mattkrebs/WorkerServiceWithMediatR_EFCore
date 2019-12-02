@@ -18,10 +18,19 @@ namespace TestWorkerWithMediatR
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Worker>();
+
 
                     services.AddApplication();
                     services.AddPersistence(hostContext.Configuration.GetConnectionString("MyDatabase"));
+
+                    //Not working, Will work if you change the env var name in launchsettings.json but wont get the correct appsetting.  
+                    //Will default to Production
+                    // services.AddHostedService<Worker>();
+
+                    //Apparently the correct way to call scoped
+                    services.AddHostedService<ScopedWorker>();
+
+
                 });
     }
 }
